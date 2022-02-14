@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import md5 from "crypto-js/md5";
-import propTypes from "prop-types";
-import { getToken, updateQuestions } from "./actions";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
+import propTypes from 'prop-types';
+import { getToken, updateQuestions } from './actions';
 
 function Login(props) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (email !== "" && name !== "") {
+    if (email !== '' && name !== '') {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -22,38 +22,29 @@ function Login(props) {
       <input
         data-testid="input-player-name"
         type="text"
-        onChange={(event) => setName(event.target.value)}
+        onChange={ (event) => setName(event.target.value) }
       />
       <input
         data-testid="input-gravatar-email"
         type="text"
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={ (event) => setEmail(event.target.value) }
       />
       <button
         type="button"
         data-testid="btn-play"
-        disabled={disabled}
-        onClick={() => {
+        disabled={ disabled }
+        onClick={ () => {
           const hash = md5(email).toString();
           console.log(hash);
-          localStorage.setItem("token", hash);
+          localStorage.setItem('token', hash);
           props.pegarToken(hash, name, email);
           fetch(`https://opentdb.com/api.php?amount=5&token=${props.token}`)
             .then((response) => response.json())
             .then((data) => {
-              if (data.response_code !== 3) {
-                props.setQuestions(data.results);
-              } else {
-                props.pegarToken(hash, name, email);
-                fetch(
-                  `https://opentdb.com/api.php?amount=5&token=${props.token}`
-                )
-                  .then((response) => response.json())
-                  .then((data) => props.setQuestions(data.results));
-              }
+              props.setQuestions(data.results);
             });
-          props.history.push("/game");
-        }}
+          props.history.push('/game');
+        } }
       >
         Jogar
       </button>
@@ -78,6 +69,7 @@ Login.propTypes = {
   setQuestions: propTypes.func.isRequired,
   pegarToken: propTypes.func.isRequired,
   history: propTypes.func.isRequired,
+  token: propTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

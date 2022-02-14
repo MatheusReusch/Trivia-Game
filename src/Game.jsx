@@ -1,7 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import Header from "./Header";
-import { updateQuestions } from "./actions";
+import React from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import Header from './Header';
+import { updateQuestions } from './actions';
 
 class Game extends React.Component {
   constructor() {
@@ -9,7 +10,6 @@ class Game extends React.Component {
 
     this.state = {
       indice: 0,
-      questions: [],
     };
   }
 
@@ -24,7 +24,7 @@ class Game extends React.Component {
       )}`,
     )
       .then((res) => res.json())
-      .then((data) => this.setState({ questions: data.results }));
+      .then((data) => console.log(data));
   }
 
   render() {
@@ -40,16 +40,16 @@ class Game extends React.Component {
             </h2>
             <h2 data-testid="question-text">{questions[indice].question}</h2>
             <section data-testid="answer-options">
-              <button data-testid="correct-answer">
+              <button type="button" data-testid="correct-answer">
                 {questions[indice].correct_answer}
               </button>
-              <button data-testid={`wrong-answer-0`}>
+              <button type="button" data-testid="wrong-answer-0">
                 {questions[indice].incorrect_answers[0]}
               </button>
-              <button data-testid={`wrong-answer-1`}>
+              <button type="button" data-testid="wrong-answer-1">
                 {questions[indice].incorrect_answers[1]}
               </button>
-              <button data-testid={`wrong-answer-2`}>
+              <button type="button" data-testid="wrong-answer-2">
                 {questions[indice].incorrect_answers[2]}
               </button>
             </section>
@@ -65,7 +65,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setQuestions: (questoes) => dispatch(updateQuestions(questoes)),
-})
+  setQuestions: (questoes) => dispatch(updateQuestions(questoes)),
+});
+
+Game.propTypes = {
+  questions: propTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

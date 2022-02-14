@@ -1,5 +1,5 @@
 const updateToken = (hash, name, email, data) => ({
-  type: "TOKEN",
+  type: 'TOKEN',
   data,
   hash,
   name,
@@ -7,7 +7,7 @@ const updateToken = (hash, name, email, data) => ({
 });
 
 export const getToken = (hash, name, email) => async (dispatch) => {
-  fetch("https://opentdb.com/api_token.php?command=request")
+  fetch('https://opentdb.com/api_token.php?command=request')
     .then((response) => response.json())
     .then((data) => {
       dispatch(updateToken(hash, name, email, data));
@@ -15,7 +15,7 @@ export const getToken = (hash, name, email) => async (dispatch) => {
 };
 
 export const saveScore = (score, difficulty, timer, pontos) => ({
-  type: "SCORE",
+  type: 'SCORE',
   score,
   difficulty,
   timer,
@@ -23,6 +23,6 @@ export const saveScore = (score, difficulty, timer, pontos) => ({
 });
 
 export const updateQuestions = (questoes) => ({
-  type: "QUESTIONS",
+  type: 'QUESTIONS',
   questoes,
 });
