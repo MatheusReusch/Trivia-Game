@@ -74,7 +74,7 @@ class Game extends React.Component {
       () => {
         this.cor();
         const { pontos } = this.state;
-        const array = [{ name: nome, assertions: pontos, score: 0, picture: imagem }]
+        const array = [{ name: nome, assertions: pontos, score: 0, picture: imagem }];
         localStorage.setItem('ranking', JSON.stringify(array));
         salvarScore(score, questions[indice].difficulty, timer, pontos);
       },

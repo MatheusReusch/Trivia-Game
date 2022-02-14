@@ -4,9 +4,9 @@ import propTypes from 'prop-types';
 
 class Feedback extends React.Component {
   render() {
-    const { nome, imagem, placar, assertions } = this.props;
+    const { nome, imagem, placar, assertions, history } = this.props;
     const tres = 3;
-    console.log(JSON.parse(localStorage.getItem('ranking'))[0].assertions)
+    console.log(JSON.parse(localStorage.getItem('ranking'))[0].assertions);
     return (
       <div>
         <h1>Feedback</h1>
@@ -17,6 +17,13 @@ class Feedback extends React.Component {
         <h2 data-testid="header-player-name">{nome}</h2>
         { assertions < tres && <h2 data-testid="feedback-text">Could be better...</h2> }
         { assertions >= tres && <h2 data-testid="feedback-text">Well Done!</h2> }
+        <button
+          type="button"
+          onClick={ () => history.push('/') }
+          data-testid="btn-play-again"
+        >
+          Play Again
+        </button>
       </div>
     );
   }
@@ -34,6 +41,7 @@ Feedback.propTypes = {
   placar: propTypes.string.isRequired,
   imagem: propTypes.string.isRequired,
   assertions: propTypes.string.isRequired,
+  history: propTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
