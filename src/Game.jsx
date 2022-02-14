@@ -10,63 +10,80 @@ class Game extends React.Component {
 
     this.state = {
       indice: 0,
+      numero: Math.round(Math.random() * (3 - 0) + 0),
+      styleCorrect: '',
+      styleIncorrect: '',
     };
   }
 
-  componentDidMount() {
-    this.handleApi();
+  corCorreta = () => {
+    this.setState({ styleCorrect: '3px solid rgb(6, 240, 15)' });
   }
 
-  handleApi = () => {
-    fetch(
-      `https://opentdb.com/api.php?amount=5&token=${localStorage.getItem(
-        'token',
-      )}`,
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+  corIncorreta = () => {
+    this.setState({ styleIncorrect: '3px solid rgb(255, 0, 0)' });
   }
 
   render() {
+    const { indice, numero, styleCorrect, styleIncorrect } = this.state;
     const { questions } = this.props;
-    const { indice } = this.state;
     return (
       <div>
         <Header />
-        {questions.length > 0 && (
+        {questions.length > 0 && numero <= 1 ? (
           <>
             <h2 data-testid="question-category">
               {questions[indice].category}
             </h2>
             <h2 data-testid="question-text">{questions[indice].question}</h2>
             <section data-testid="answer-options">
-              <button type="button" data-testid="correct-answer">
-                {questions[indice].correct_answer}
+              <button type="button" onClick={ () => this.corCorreta() } style={ { border: styleCorrect } } data-testid="correct-answer">
+                {  questions[indice].correct_answer}
               </button>
-              <button type="button" data-testid="wrong-answer-0">
+              <button type="button" style={ { border: styleIncorrect } } data-testid="wrong-answer-0">
                 {questions[indice].incorrect_answers[0]}
               </button>
-              <button type="button" data-testid="wrong-answer-1">
+              <button type="button" style={ { border: styleIncorrect } } data-testid="wrong-answer-1">
                 {questions[indice].incorrect_answers[1]}
               </button>
-              <button type="button" data-testid="wrong-answer-2">
+              <button type="button" style={ { border: styleIncorrect } } data-testid="wrong-answer-2">
                 {questions[indice].incorrect_answers[2]}
               </button>
             </section>
           </>
-        )}
+        ) : (questions.length > 0 && <>
+        <h2 data-testid="question-category">
+          {questions[indice].category}
+        </h2>
+        <h2 data-testid="question-text">{questions[indice].question}</h2>
+        <section data-testid="answer-options">
+          <button type="button" style={ { border: styleIncorrect } } data-testid="wrong-answer-2">
+            {questions[indice].incorrect_answers[2]}
+          </button>
+          <button type="button" onClick={ () => this.corCorreta() } style={ { border: styleCorrect } } data-testid="correct-answer">
+            {  questions[indice].correct_answer}
+          </button>
+          <button type="button" style={ { border: styleIncorrect } } data-testid="wrong-answer-0">
+            {questions[indice].incorrect_answers[0]}
+          </button>
+          <button type="button" style={ { border: styleIncorrect } } data-testid="wrong-answer-1">
+            {questions[indice].incorrect_answers[1]}
+          </button>
+        </section>
+      </>)
+      }
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  questions: state.questoes,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   setQuestions: (questoes) => dispatch(updateQuestions(questoes)),
 });
+
+const mapStateToProps = (state) => ({
+    questions: state.questoes,
+})
 
 Game.propTypes = {
   questions: propTypes.func.isRequired,
