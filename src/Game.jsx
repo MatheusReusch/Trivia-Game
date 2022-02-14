@@ -67,13 +67,15 @@ class Game extends React.Component {
   };
 
   onClickdoBotaoCerto = () => {
-    const { questions, salvarScore, score } = this.props;
     const { indice, timer } = this.state;
+    const { questions, salvarScore, score, nome, imagem } = this.props;
     this.setState(
       (prevState) => ({ pontos: prevState.pontos + 1 }),
       () => {
         this.cor();
         const { pontos } = this.state;
+        const array = [{ name: nome, assertions: pontos, score: 0, picture: imagem }]
+        localStorage.setItem('ranking', JSON.stringify(array));
         salvarScore(score, questions[indice].difficulty, timer, pontos);
       },
     );
