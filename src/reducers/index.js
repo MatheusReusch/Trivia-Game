@@ -1,6 +1,7 @@
 const INITAL_STATE = {
   token: '',
   questoes: [],
+  pontos: 0,
   player: {
     name: '',
     assertions: 0,
@@ -9,9 +10,17 @@ const INITAL_STATE = {
   },
 };
 
+const dez = 10;
+const trez = 3;
+
+function questoes(state, action) {
+  return {
+    ...state,
+    questoes: action.questoes,
+  };
+}
+
 const reducer = (state = INITAL_STATE, action) => {
-  const dez = 10;
-  const trez = 3;
   switch (action.type) {
   case 'TOKEN':
     return {
@@ -25,32 +34,38 @@ const reducer = (state = INITAL_STATE, action) => {
       },
     };
   case 'QUESTIONS':
-    return {
-      ...state,
-      questoes: action.questoes,
-    };
+    return questoes(state, action);
   case 'SCORE':
-    console.log(action.pontos);
     switch (action.difficulty) {
     case 'easy':
       return {
         ...state,
-        score: action.score + (dez + (action.timer * 1)),
         pontos: action.pontos,
+        player: {
+          ...state.player,
+          score: action.score + (dez + action.timer * 1),
+        },
       };
     case 'medium':
       return {
         ...state,
-        score: action.score + (dez + (action.timer * 2)),
         pontos: action.pontos,
+        player: {
+          ...state.player,
+          score: action.score + (dez + action.timer * 2),
+        },
       };
     case 'hard':
       return {
         ...state,
-        score: action.score + (dez + (action.timer * trez)),
         pontos: action.pontos,
+        player: {
+          ...state.player,
+          score: action.score + (dez + action.timer * trez),
+        },
       };
-    default: return state;
+    default:
+      return state;
     }
   default:
     return state;
