@@ -1,4 +1,4 @@
-const updateToken = (hash, name, email, data) => ({
+export const updateToken = (hash, name, email, data) => ({
   type: 'TOKEN',
   data,
   hash,
@@ -7,9 +7,10 @@ const updateToken = (hash, name, email, data) => ({
 });
 
 export const getToken = (hash, name, email) => async (dispatch) => {
-  fetch('https://opentdb.com/api_token.php?command=request')
+  await fetch('https://opentdb.com/api_token.php?command=request')
     .then((response) => response.json())
     .then((data) => {
+      localStorage.setItem('token', data.token);
       dispatch(updateToken(hash, name, email, data));
     });
 };
