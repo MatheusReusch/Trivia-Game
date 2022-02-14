@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import propTypes from "prop-types";
-import Header from "./Header";
-import { updateQuestions } from "./actions";
+import React from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import Header from './Header';
+import { updateQuestions } from './actions';
 
 class Game extends React.Component {
   constructor() {
@@ -11,14 +11,15 @@ class Game extends React.Component {
     this.state = {
       indice: 0,
       numero: Math.round(Math.random() * (tres - 0) + 0),
-      styleCorrect: "",
-      styleIncorrect: "",
+      styleCorrect: '',
+      styleIncorrect: '',
       timer: 30,
       disabled: false,
     };
   }
 
   componentDidMount() {
+    const mil = 1000;
     setInterval(() => {
       this.setState(
         (prevState) => ({ timer: prevState.timer - 1 }),
@@ -27,17 +28,17 @@ class Game extends React.Component {
           if (timer <= 0) {
             this.setState({ disabled: true });
           }
-        }
+        },
       );
-    }, 1000);
+    }, mil);
   }
 
   corCorreta = () => {
-    this.setState({ styleCorrect: "3px solid rgb(6, 240, 15)" });
+    this.setState({ styleCorrect: '3px solid rgb(6, 240, 15)' });
   };
 
   corIncorreta = () => {
-    this.setState({ styleIncorrect: "3px solid rgb(255, 0, 0)" });
+    this.setState({ styleIncorrect: '3px solid rgb(255, 0, 0)' });
   };
 
   cor = () => {
@@ -46,8 +47,7 @@ class Game extends React.Component {
   };
 
   render() {
-    const { indice, numero, styleCorrect, styleIncorrect, timer, disabled } =
-      this.state;
+    const { indice, numero, styleCorrect, styleIncorrect, timer, disabled } = this.state;
     const { questions } = this.props;
     return (
       <div>
@@ -62,33 +62,33 @@ class Game extends React.Component {
             <section data-testid="answer-options">
               <button
                 type="button"
-                disabled={disabled}
-                onClick={() => this.cor()}
-                style={{ border: styleCorrect }}
+                disabled={ disabled }
+                onClick={ () => this.cor() }
+                style={ { border: styleCorrect } }
                 data-testid="correct-answer"
               >
                 {questions[indice].correct_answer}
               </button>
               <button
                 type="button"
-                onClick={() => this.cor()}
-                style={{ border: styleIncorrect }}
+                onClick={ () => this.cor() }
+                style={ { border: styleIncorrect } }
                 data-testid="wrong-answer-0"
               >
                 {questions[indice].incorrect_answers[0]}
               </button>
               <button
                 type="button"
-                onClick={() => this.cor()}
-                style={{ border: styleIncorrect }}
+                onClick={ () => this.cor() }
+                style={ { border: styleIncorrect } }
                 data-testid="wrong-answer-1"
               >
                 {questions[indice].incorrect_answers[1]}
               </button>
               <button
                 type="button"
-                onClick={() => this.cor()}
-                style={{ border: styleIncorrect }}
+                onClick={ () => this.cor() }
+                style={ { border: styleIncorrect } }
                 data-testid="wrong-answer-2"
               >
                 {questions[indice].incorrect_answers[2]}
@@ -105,33 +105,33 @@ class Game extends React.Component {
               <section data-testid="answer-options">
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleIncorrect }}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleIncorrect } }
                   data-testid="wrong-answer-2"
                 >
                   {questions[indice].incorrect_answers[2]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleCorrect }}
-                  disabled={disabled}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleCorrect } }
+                  disabled={ disabled }
                   data-testid="correct-answer"
                 >
                   {questions[indice].correct_answer}
                 </button>
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleIncorrect }}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleIncorrect } }
                   data-testid="wrong-answer-0"
                 >
                   {questions[indice].incorrect_answers[0]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleIncorrect }}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleIncorrect } }
                   data-testid="wrong-answer-1"
                 >
                   {questions[indice].incorrect_answers[1]}
