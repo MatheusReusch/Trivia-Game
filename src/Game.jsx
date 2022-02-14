@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import propTypes from "prop-types";
-import Header from "./Header";
-import { updateQuestions, saveScore } from "./actions";
+import React from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import Header from './Header';
+import { updateQuestions, saveScore } from './actions';
 
 class Game extends React.Component {
   constructor() {
@@ -11,12 +11,12 @@ class Game extends React.Component {
     this.state = {
       indice: 0,
       numero: Math.round(Math.random() * (tres - 0) + 0),
-      styleCorrect: "",
-      styleIncorrect: "",
+      styleCorrect: '',
+      styleIncorrect: '',
       timer: 30,
       disabled: false,
       pontos: 0,
-      next: "none",
+      next: 'none',
     };
   }
 
@@ -24,7 +24,7 @@ class Game extends React.Component {
     const mil = 1000;
     const { nome, imagem } = this.props;
     const player = [{ name: nome, assertions: 0, score: 0, picture: imagem }];
-    localStorage.setItem("ranking", JSON.stringify(player));
+    localStorage.setItem('ranking', JSON.stringify(player));
     setInterval(() => {
       this.setState(
         (prevState) => ({ timer: prevState.timer - 1 }),
@@ -33,23 +33,36 @@ class Game extends React.Component {
           if (timer <= 0) {
             this.setState({ disabled: true });
           }
-        }
+        },
       );
     }, mil);
   }
 
+  onNextClick = () => {
+    const quatro = 4;
+    const { history } = this.props;
+    const { indice } = this.state;
+    if (indice < quatro) {
+      this.setState((prevState) => ({
+        indice: prevState.indice + 1,
+      }));
+    } else {
+      history.push('/feedback');
+    }
+  };
+
   corCorreta = () => {
-    this.setState({ styleCorrect: "3px solid rgb(6, 240, 15)" });
+    this.setState({ styleCorrect: '3px solid rgb(6, 240, 15)' });
   };
 
   corIncorreta = () => {
-    this.setState({ styleIncorrect: "3px solid rgb(255, 0, 0)" });
+    this.setState({ styleIncorrect: '3px solid rgb(255, 0, 0)' });
   };
 
   cor = () => {
     this.corCorreta();
     this.corIncorreta();
-    this.setState({ next: "" });
+    this.setState({ next: '' });
   };
 
   onClickdoBotaoCerto = () => {
@@ -60,7 +73,7 @@ class Game extends React.Component {
       () => {
         this.cor();
         salvarScore(score, questions[indice].difficulty, timer, pontos);
-      }
+      },
     );
   };
 
@@ -88,51 +101,46 @@ class Game extends React.Component {
             <section data-testid="answer-options">
               <button
                 type="button"
-                disabled={disabled}
-                onClick={() => {
+                disabled={ disabled }
+                onClick={ () => {
                   this.onClickdoBotaoCerto();
-                }}
-                style={{ border: styleCorrect }}
+                } }
+                style={ { border: styleCorrect } }
                 data-testid="correct-answer"
               >
                 {questions[indice].correct_answer}
               </button>
               <button
                 type="button"
-                onClick={() => this.cor()}
-                style={{ border: styleIncorrect }}
+                onClick={ () => this.cor() }
+                style={ { border: styleIncorrect } }
                 data-testid="wrong-answer-0"
               >
                 {questions[indice].incorrect_answers[0]}
               </button>
               <button
                 type="button"
-                onClick={() => this.cor()}
-                style={{ border: styleIncorrect }}
+                onClick={ () => this.cor() }
+                style={ { border: styleIncorrect } }
                 data-testid="wrong-answer-1"
               >
                 {questions[indice].incorrect_answers[1]}
               </button>
               <button
                 type="button"
-                onClick={() => this.cor()}
-                style={{ border: styleIncorrect }}
+                onClick={ () => this.cor() }
+                style={ { border: styleIncorrect } }
                 data-testid="wrong-answer-2"
               >
                 {questions[indice].incorrect_answers[2]}
               </button>
             </section>
             <button
-              style={{ display: next }}
-              onClick={() => {
-                if ( indice < 4 ) {
-                    this.setState((prevState) => ({
-                      indice: prevState.indice + 1,
-                    }));
-                } else {
-                    this.props.history.push('/feedback');
-                }  
-              }}
+              type="button"
+              style={ { display: next } }
+              onClick={ () => {
+                this.onNextClick();
+              } }
               data-testid="btn-next"
             >
               Next
@@ -148,51 +156,46 @@ class Game extends React.Component {
               <section data-testid="answer-options">
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleIncorrect }}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleIncorrect } }
                   data-testid="wrong-answer-2"
                 >
                   {questions[indice].incorrect_answers[2]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
+                  onClick={ () => {
                     this.onClickdoBotaoCerto();
-                  }}
-                  style={{ border: styleCorrect }}
-                  disabled={disabled}
+                  } }
+                  style={ { border: styleCorrect } }
+                  disabled={ disabled }
                   data-testid="correct-answer"
                 >
                   {questions[indice].correct_answer}
                 </button>
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleIncorrect }}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleIncorrect } }
                   data-testid="wrong-answer-0"
                 >
                   {questions[indice].incorrect_answers[0]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => this.cor()}
-                  style={{ border: styleIncorrect }}
+                  onClick={ () => this.cor() }
+                  style={ { border: styleIncorrect } }
                   data-testid="wrong-answer-1"
                 >
                   {questions[indice].incorrect_answers[1]}
                 </button>
               </section>
               <button
-                style={{ display: next }}
-                onClick={() => {
-                  if ( indice < 4 ) {
-                      this.setState((prevState) => ({
-                        indice: prevState.indice + 1,
-                      }));
-                  } else {
-                      this.props.history.push('/feedback');
-                  }  
-                }}
+                type="button"
+                style={ { display: next } }
+                onClick={ () => {
+                  this.onNextClick();
+                } }
                 data-testid="btn-next"
               >
                 Next
@@ -207,8 +210,8 @@ class Game extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setQuestions: (questoes) => dispatch(updateQuestions(questoes)),
-  salvarScore: (score, difficulty, timer, pontos) =>
-    dispatch(saveScore(score, difficulty, timer, pontos)),
+  salvarScore: (score, difficulty, timer,
+    pontos) => dispatch(saveScore(score, difficulty, timer, pontos)),
 });
 
 const mapStateToProps = (state) => ({
@@ -224,6 +227,7 @@ Game.propTypes = {
   imagem: propTypes.string.isRequired,
   score: propTypes.string.isRequired,
   salvarScore: propTypes.string.isRequired,
+  history: propTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
