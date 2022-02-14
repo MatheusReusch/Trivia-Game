@@ -9,9 +9,10 @@ const INITAL_STATE = {
   },
 };
 
+const dez = 10;
+const trez = 3;
+
 const reducer = (state = INITAL_STATE, action) => {
-  const dez = 10;
-  const trez = 3;
   switch (action.type) {
   case 'TOKEN':
     return {
@@ -30,27 +31,33 @@ const reducer = (state = INITAL_STATE, action) => {
       questoes: action.questoes,
     };
   case 'SCORE':
-    console.log(action.pontos);
     switch (action.difficulty) {
     case 'easy':
       return {
         ...state,
-        score: action.score + (dez + (action.timer * 1)),
-        pontos: action.pontos,
+        player: {
+          ...state.player,
+          score: action.score + (dez + action.timer * 1),
+        },
       };
     case 'medium':
       return {
         ...state,
-        score: action.score + (dez + (action.timer * 2)),
-        pontos: action.pontos,
+        player: {
+          ...state.player,
+          score: action.score + (dez + action.timer * 2),
+        },
       };
     case 'hard':
       return {
         ...state,
-        score: action.score + (dez + (action.timer * trez)),
-        pontos: action.pontos,
+        player: {
+          ...state.player,
+          score: action.score + (dez + action.timer * trez),
+        },
       };
-    default: return state;
+    default:
+      return state;
     }
   default:
     return state;

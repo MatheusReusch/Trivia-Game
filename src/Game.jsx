@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import Header from './Header';
-import { updateQuestions } from './actions';
+import { updateQuestions, saveScore } from './actions';
 
 class Game extends React.Component {
   constructor() {
@@ -15,11 +15,15 @@ class Game extends React.Component {
       styleIncorrect: '',
       timer: 30,
       disabled: false,
+      pontos: 0,
     };
   }
 
   componentDidMount() {
     const mil = 1000;
+    const { nome, imagem } = this.props;
+    const player = [{ name: nome, assertions: 0, score: 0, picture: imagem }];
+    localStorage.setItem('ranking', JSON.stringify(player));
     setInterval(() => {
       this.setState(
         (prevState) => ({ timer: prevState.timer - 1 }),
@@ -46,8 +50,32 @@ class Game extends React.Component {
     this.corIncorreta();
   };
 
+  onClickdoBotaoCerto = () => {
+    const { questions, salvarScore, score } = this.props;
+    const { indice, timer, pontos } = this.state;
+    this.setState(
+      (prevState) => ({ pontos: prevState.pontos + 1 }),
+      () => {
+        this.cor();
+        salvarScore(
+          score,
+          questions[indice].difficulty,
+          timer,
+          pontos,
+        );
+      },
+    );
+  }
+
   render() {
-    const { indice, numero, styleCorrect, styleIncorrect, timer, disabled } = this.state;
+    const {
+      indice,
+      numero,
+      styleCorrect,
+      styleIncorrect,
+      timer,
+      disabled,
+    } = this.state;
     const { questions } = this.props;
     return (
       <div>
@@ -63,7 +91,9 @@ class Game extends React.Component {
               <button
                 type="button"
                 disabled={ disabled }
-                onClick={ () => this.cor() }
+                onClick={ () => {
+                  this.onClickdoBotaoCerto();
+                } }
                 style={ { border: styleCorrect } }
                 data-testid="correct-answer"
               >
@@ -113,7 +143,9 @@ class Game extends React.Component {
                 </button>
                 <button
                   type="button"
-                  onClick={ () => this.cor() }
+                  onClick={ () => {
+                    this.onClickdoBotaoCerto();
+                  } }
                   style={ { border: styleCorrect } }
                   disabled={ disabled }
                   data-testid="correct-answer"
@@ -147,14 +179,23 @@ class Game extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setQuestions: (questoes) => dispatch(updateQuestions(questoes)),
+  salvarScore: (score, difficulty, timer,
+    pontos) => dispatch(saveScore(score, difficulty, timer, pontos)),
 });
 
 const mapStateToProps = (state) => ({
   questions: state.questoes,
+  nome: state.player.name,
+  imagem: state.player.hash,
+  score: state.player.score,
 });
 
 Game.propTypes = {
   questions: propTypes.func.isRequired,
+  nome: propTypes.string.isRequired,
+  imagem: propTypes.string.isRequired,
+  score: propTypes.string.isRequired,
+  salvarScore: propTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
