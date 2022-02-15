@@ -50,16 +50,16 @@ function Login(props) {
             )}`,
           )
             .then((response) => response.json())
-            .then((data) => {
+            .then(async (data) => {
               if (data.results.length !== 0) {
                 props.setQuestions(data.results);
               } else {
-                console.log('errou');
-                props.pegarToken(hash, name, email);
+                const response1 = await fetch('https://opentdb.com/api_token.php?command=request');
+                const data1 = await response1.json();
+                localStorage.setItem('token', data1.token);
+                updateToken2(hash, name, email, data1);
                 fetch(
-                  `https://opentdb.com/api.php?amount=5&token=${localStorage.getItem(
-                    'token',
-                  )}`,
+                  `https://opentdb.com/api.php?amount=5&token=${data1.token}`,
                 )
                   .then((response) => response.json())
                   .then((data2) => props.setQuestions(data2.results));
@@ -91,7 +91,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   setQuestions: propTypes.func.isRequired,
-  pegarToken: propTypes.func.isRequired,
   history: propTypes.func.isRequired,
   updateToken2: propTypes.func.isRequired,
 };
