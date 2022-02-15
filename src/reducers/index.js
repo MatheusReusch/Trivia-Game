@@ -20,6 +20,49 @@ function questoes(state, action) {
   };
 }
 
+function leveling(state, action) {
+  switch (action.difficulty) {
+  case 'easy':
+    return {
+      ...state,
+      pontos: action.pontos,
+      player: {
+        ...state.player,
+        score: action.score + (dez + action.timer * 1),
+      },
+    };
+  case 'medium':
+    return {
+      ...state,
+      pontos: action.pontos,
+      player: {
+        ...state.player,
+        score: action.score + (dez + action.timer * 2),
+      },
+    };
+  case 'hard':
+    return {
+      ...state,
+      pontos: action.pontos,
+      player: {
+        ...state.player,
+        score: action.score + (dez + action.timer * trez),
+      },
+    };
+  case 'reset':
+    return {
+      ...state,
+      pontos: 0,
+      player: {
+        ...state.player,
+        score: 0,
+      },
+    };
+  default:
+    return state;
+  }
+}
+
 const reducer = (state = INITAL_STATE, action) => {
   switch (action.type) {
   case 'TOKEN':
@@ -36,37 +79,7 @@ const reducer = (state = INITAL_STATE, action) => {
   case 'QUESTIONS':
     return questoes(state, action);
   case 'SCORE':
-    switch (action.difficulty) {
-    case 'easy':
-      return {
-        ...state,
-        pontos: action.pontos,
-        player: {
-          ...state.player,
-          score: action.score + (dez + action.timer * 1),
-        },
-      };
-    case 'medium':
-      return {
-        ...state,
-        pontos: action.pontos,
-        player: {
-          ...state.player,
-          score: action.score + (dez + action.timer * 2),
-        },
-      };
-    case 'hard':
-      return {
-        ...state,
-        pontos: action.pontos,
-        player: {
-          ...state.player,
-          score: action.score + (dez + action.timer * trez),
-        },
-      };
-    default:
-      return state;
-    }
+    return leveling(state, action);
   default:
     return state;
   }

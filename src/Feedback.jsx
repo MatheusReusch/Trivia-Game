@@ -5,8 +5,23 @@ import propTypes from 'prop-types';
 class Feedback extends React.Component {
   render() {
     const { nome, imagem, placar, assertions, history } = this.props;
+    console.log(imagem);
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (ranking) {
+      localStorage.setItem('ranking', JSON.stringify([...ranking,
+        {
+          name: nome,
+          picture: imagem,
+          score: placar,
+        }]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([{
+        name: nome,
+        picture: imagem,
+        score: placar,
+      }]));
+    }
     const tres = 3;
-    console.log(JSON.parse(localStorage.getItem('ranking'))[0].assertions);
     return (
       <div>
         <h1>Feedback</h1>
@@ -38,7 +53,7 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   nome: state.player.name,
-  imagem: state.player.picture,
+  imagem: state.player.hash,
   placar: state.player.score,
   assertions: state.pontos,
 });
