@@ -21,11 +21,10 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const { salvarScore } = this.props;
+    salvarScore(0, 'reset', 0, 0);
     const mil = 1000;
     localStorage.setItem('acertos', 0);
-    const { nome, imagem } = this.props;
-    const player = [{ name: nome, assertions: 0, score: 0, picture: imagem }];
-    localStorage.setItem('ranking', JSON.stringify(player));
     setInterval(() => {
       this.setState(
         (prevState) => ({ timer: prevState.timer - 1 }),
@@ -68,14 +67,12 @@ class Game extends React.Component {
 
   onClickdoBotaoCerto = () => {
     const { indice, timer } = this.state;
-    const { questions, salvarScore, score, nome, imagem } = this.props;
+    const { questions, salvarScore, score } = this.props;
     this.setState(
       (prevState) => ({ pontos: prevState.pontos + 1 }),
       () => {
         this.cor();
         const { pontos } = this.state;
-        const array = [{ name: nome, assertions: pontos, score: 0, picture: imagem }];
-        localStorage.setItem('ranking', JSON.stringify(array));
         salvarScore(score, questions[indice].difficulty, timer, pontos);
       },
     );
@@ -227,8 +224,6 @@ const mapStateToProps = (state) => ({
 
 Game.propTypes = {
   questions: propTypes.func.isRequired,
-  nome: propTypes.string.isRequired,
-  imagem: propTypes.string.isRequired,
   score: propTypes.string.isRequired,
   salvarScore: propTypes.string.isRequired,
   history: propTypes.string.isRequired,
