@@ -11,6 +11,7 @@ const INITAL_STATE = {
 };
 
 const dez = 10;
+
 const trez = 3;
 
 function questoes(state, action) {
