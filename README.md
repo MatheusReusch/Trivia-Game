@@ -5,4 +5,4 @@ A aplicação foi desenvolvida consumindo as perguntas retornadas da API do Triv
 
 Foi utilizado a biblioteca crypto.js para gerar uma chave hash criptografada.
 
-
+![trivia](/trivia.png)
